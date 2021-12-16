@@ -9,7 +9,7 @@ const boulderContainer = document.getElementById('boulder-container');
 
 const totalEl = document.getElementById('total');
 const winsEl = document.getElementById('wins');
-const lossesEl = document.getElementById('losses')
+const lossesEl = document.getElementById('losses');
 // initialize state
 const hidingPlaces = [
     'tree',
@@ -19,61 +19,58 @@ const hidingPlaces = [
 
 let correctGuesses = 0;
 let totalGuesses = 0;
-function displayWinsLossesAndTotal() {
-    winsEl.textContent = correctGuesses
-    totalEl.textContent = totalGuesses;
-    lossesEl.textContent = totalGuesses - correctGuesses;
-}
 
 
-function getRandomItem(hidingPlaces) {
-    const index = Math.floor(Math.random() * 3);
 
-    return hidingPlaces[index];
+function getRandomItem(arr) {
+    const index = Math.floor(Math.random() * arr.length);
+
+    return arr[index];
 }
 
 function handleGuess(userGuess, correctSpot) {
     // should reset the styles
-resetStyles();
+    resetStyles();
     // then increment the guesses
-totalGuesses++;
+    totalGuesses++;
     // then grab the appropriate container element for the correct guess from the DOM
-const correctString= document.getElementById(correctSpot)
+    const correctHidingPlaceEl = document.getElementById(`${correctSpot}-container`);
     // then add the face class to that element so that the face shows up
-correctString.classList.add = ('face');
+    correctHidingPlaceEl.classList.add('face');
     // then if the user guess is correct, increment the correct guesses
-if (userGuess === correctSpot) {
-    correctGuesses++;
-}
+    if (userGuess === correctSpot) {
+        correctGuesses++;
+    }
     // update the DOM to show this change to the user (including the losses, not tracked directly in state)
-displayWinsLossesAndTotal
-}
+    totalEl.textContent = totalGuesses;
+    winsEl.textContent = correctGuesses;
+    lossesEl.textContent = totalGuesses - correctGuesses;
 
-
+} 
 function resetStyles() {
-    shedContainer.src = './assets/shed.png'
-    treeContainer.src = './assets/tree.webp'
-    boulderContainer.src = './assets/boulder.png';
+    shedContainer.classList.remove('face');
+    treeContainer.classList.remove('face');
+    boulderContainer.classList.remove('face');
     // should remove the face class from all containers
 }
 
 shedButton.addEventListener('click', () => {
     // should get a random item to call the 'correct spot'
-let correctSpot = getRandomItem(hidingPlaces) + '-container';
+    const correctSpot = getRandomItem(hidingPlaces);
     // then use that correct spot to 'handle the guess' using the handleGuess function
-handleGuess('shed-container');
+    handleGuess('shed', correctSpot);
 });
 
 treeButton.addEventListener('click', () => {
     // should get a random item to call the 'correct spot'
- let correctSpot = getRandomItem(hidingPlaces) + '-container';
+    const correctSpot = getRandomItem(hidingPlaces);
     // then use that correct spot to 'handle the guess' using the handleGuess function
-    handleGuess('tree-container');
+    handleGuess('tree', correctSpot);
 });
 
 boulderButton.addEventListener('click', () => {
     // should get a random item to call the 'correct spot'
-let correctSpot = getRandomItem(hidingPlaces) + '-container';
+    const correctSpot = getRandomItem(hidingPlaces);
     // then use that correct spot to 'handle the guess' using the handleGuess function
-    handleGuess('boulder-container');
+    handleGuess('boulder', correctSpot);
 });
